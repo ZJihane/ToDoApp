@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ToDoApp</string>
+    <string-array name="status_options">
+        <item>PENDING</item>
+        <item>IN_PROGRESS</item>
+        <item>COMPLETED</item>
+    </string-array>
+
+    <string-array name="priority_options">
+        <item>HIGH</item>
+        <item>MEDIUM</item>
+        <item>LOW</item>
+    </string-array>
+</resources>
