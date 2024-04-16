@@ -2,17 +2,28 @@ package com.example.todoapp;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
+import DAO_IMP.TaskDaoImpl;
 import Model.Task;
 
 public class TaskDetailsActivity extends AppCompatActivity {
@@ -21,81 +32,137 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private EditText dueDateEditText;
     private Spinner statusSpinner;
     private Spinner prioritySpinner;
-    private Calendar dueDateCalendar;
+    private Button updateButton;
+    private FirebaseFirestore db;
+
+    private DatePickerDialog.OnDateSetListener dateSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
 
-        // Initialize EditTexts and Spinners
+        // Initialize views
         titleEditText = findViewById(R.id.edit_text_title);
         descriptionEditText = findViewById(R.id.edit_text_description);
         dueDateEditText = findViewById(R.id.edit_text_due_date);
         statusSpinner = findViewById(R.id.spinner_status);
         prioritySpinner = findViewById(R.id.spinner_priority);
+        updateButton = findViewById(R.id.buttonUpdateTask);
+
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
+
+        // Set click listener for update button
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateTask();
+            }
+        });
 
         // Get task details from intent
         Task task = getIntent().getParcelableExtra("task");
 
-        // Set task values in EditTexts and Spinners
+        // Populate fields with task details
         if (task != null) {
             titleEditText.setText(task.getTitle());
             descriptionEditText.setText(task.getDescription());
 
-            // Initialize dueDateCalendar with task's due date
-            dueDateCalendar = Calendar.getInstance();
-            dueDateCalendar.setTime(task.getDueDate());
+            // Format the due date to display only the date part
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String formattedDueDate = dateFormat.format(task.getDueDate());
+            dueDateEditText.setText(formattedDueDate);
 
-            // Update dueDateEditText with task's due date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-            dueDateEditText.setText(dateFormat.format(dueDateCalendar.getTime()));
-
-            // Set status spinner selection
+            // For status spinner
             ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(
-                    this, R.array.status_array, android.R.layout.simple_spinner_item);
+                    TaskDetailsActivity.this, R.array.status_array, android.R.layout.simple_spinner_item);
             statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             statusSpinner.setAdapter(statusAdapter);
-            if (task.getStatus() != null) {
-                int statusPosition = statusAdapter.getPosition(task.getStatus().toString());
-                statusSpinner.setSelection(statusPosition);
-            }
+            int statusPosition = statusAdapter.getPosition(task.getStatus().toString());
+            statusSpinner.setSelection(statusPosition);
 
-            // Set priority spinner selection
+            // For priority spinner
             ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(
-                    this, R.array.priority_array, android.R.layout.simple_spinner_item);
+                    TaskDetailsActivity.this, R.array.priority_array, android.R.layout.simple_spinner_item);
             priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             prioritySpinner.setAdapter(priorityAdapter);
-            if (task.getPriority() != null) {
-                int priorityPosition = priorityAdapter.getPosition(task.getPriority().toString());
-                prioritySpinner.setSelection(priorityPosition);
-            }
+            int priorityPosition = priorityAdapter.getPosition(task.getPriority().toString());
+            prioritySpinner.setSelection(priorityPosition);
         }
 
-        // Set click listener for dueDateEditText to show DatePickerDialog
-        dueDateEditText.setOnClickListener(v -> showDatePickerDialog());
+        // Set click listener for due date field to open date picker dialog
+        dueDateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
+
+        // Initialize date picker listener
+        dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                dueDateEditText.setText(dateFormat.format(calendar.getTime()));
+            }
+        };
     }
 
-    // Method to display DatePickerDialog
-    private void showDatePickerDialog() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        dueDateCalendar.set(Calendar.YEAR, year);
-                        dueDateCalendar.set(Calendar.MONTH, monthOfYear);
-                        dueDateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    private void updateTask() {
+        // Retrieve values from EditText and Spinners
+        String title = titleEditText.getText().toString();
+        String description = descriptionEditText.getText().toString();
+        String dueDateString = dueDateEditText.getText().toString();
+        String status = statusSpinner.getSelectedItem().toString();
+        String priority = prioritySpinner.getSelectedItem().toString();
 
-                        // Update dueDateEditText with selected date
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        dueDateEditText.setText(dateFormat.format(dueDateCalendar.getTime()));
-                    }
-                },
-                dueDateCalendar.get(Calendar.YEAR),
-                dueDateCalendar.get(Calendar.MONTH),
-                dueDateCalendar.get(Calendar.DAY_OF_MONTH)
-        );
+        Date dueDate;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            dueDate = dateFormat.parse(dueDateString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // Get the original task from intent
+        Task originalTask = getIntent().getParcelableExtra("task");
+
+
+        // Create Task object with updated values and original ID
+        Task updatedTask = new Task(title, description, dueDate,
+                Task.TaskStatus.valueOf(status), Task.TaskPriority.valueOf(priority));
+
+        // Call DAO method to update task in Firestore
+        TaskDaoImpl taskDao = new TaskDaoImpl();
+        taskDao.updateTask(db, updatedTask, originalTask.getTaskId(), new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(TaskDetailsActivity.this, "Task updated successfully", Toast.LENGTH_SHORT).show();
+                finish(); // Close activity after successful update
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(TaskDetailsActivity.this, "Failed to update task: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(TaskDetailsActivity.this,
+                dateSetListener, year, month, dayOfMonth);
         datePickerDialog.show();
     }
 }

@@ -27,6 +27,17 @@ public class Task implements Parcelable {
         this.taskId = generateTaskId();
     }
 
+    public Task(String taskId ,String title, String description, Date dueDate, TaskStatus status, TaskPriority priority) {
+        this.taskId=taskId ;
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.status = status;
+        this.priority = priority;
+        this.createdAt = new Date();
+        this.taskId = generateTaskId();
+    }
+
     public String getTaskId() {
         return taskId;
     }

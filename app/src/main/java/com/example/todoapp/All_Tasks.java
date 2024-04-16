@@ -1,4 +1,5 @@
 package com.example.todoapp;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Task;
 import DAO_IMP.TaskDaoImpl;
+import Model.Task;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -112,6 +113,11 @@ public class All_Tasks extends AppCompatActivity {
         });
     }
 
+    // Method to refresh tasks after update
+    private void refreshTasks() {
+        getTasks();
+    }
+
 
     private void filterTasks(String query) {
         List<Task> filteredTasks = new ArrayList<>();
@@ -121,5 +127,11 @@ public class All_Tasks extends AppCompatActivity {
             }
         }
         myAdapter.setData(filteredTasks);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getTasks();
     }
 }

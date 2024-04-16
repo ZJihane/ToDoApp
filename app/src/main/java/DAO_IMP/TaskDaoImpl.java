@@ -35,9 +35,31 @@ public class TaskDaoImpl implements TaskDAO {
     }
 
     @Override
-    public void updateTask(Task task) {
-        tasks.put(task.getTaskId(), task);
+    public void updateTask(FirebaseFirestore db, Task task, String TaskId, OnSuccessListener<Void> successListener, OnFailureListener failureListener) {
+        db.collection("Tasks")
+                .whereEqualTo("taskId", TaskId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        // Update the found document with the provided task object
+                        db.collection("Tasks")
+                                .document(document.getId()) // Use the document ID to update
+                                .set(task)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Invoke the success listener once the update is successful
+                                    successListener.onSuccess(null);
+                                })
+                                .addOnFailureListener(failureListener);
+                        return; // Exit the loop after updating the first matching document
+                    }
+                    // If no matching document is found, handle the failure
+                    failureListener.onFailure(new Exception("No document found with taskId: " + task.getTaskId()));
+                })
+                .addOnFailureListener(failureListener);
     }
+
+
+
 
     @Override
     public void deleteTask(String taskId) {
