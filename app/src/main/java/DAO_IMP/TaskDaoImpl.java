@@ -61,9 +61,17 @@ public class TaskDaoImpl implements TaskDAO {
 
 
 
-    @Override
-    public void deleteTask(String taskId) {
-        tasks.remove(taskId);
+    public void deleteTask(FirebaseFirestore db, String taskId, OnSuccessListener<Void> successListener, OnFailureListener failureListener) {
+        db.collection("Tasks")
+                .whereEqualTo("taskId", taskId) // Query documents where the "taskId" field matches the provided taskId
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        documentSnapshot.getReference().delete(); // Delete each document found
+                    }
+                    successListener.onSuccess(null); // Invoke success listener once all documents are deleted
+                })
+                .addOnFailureListener(failureListener);
     }
 
     @Override

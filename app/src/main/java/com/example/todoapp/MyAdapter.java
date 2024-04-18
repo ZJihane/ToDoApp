@@ -108,12 +108,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
         } else if (itemId == R.id.item2) {
-                    Toast.makeText(context, "Supprimer la tâche: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+                    // Handle option 2 (delete task)
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Delete task");
+                    builder.setMessage("Do you really want to delete this task");
+                    builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            deleteTask(task);
+                        }
+                    });
+                    builder.setNegativeButton("Annuler", null);
+                    builder.show();
                     return true;
-                } else if (itemId == R.id.item3) {
-                    Toast.makeText(context, "Partager la tâche: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+                }else if (itemId == R.id.item3) {
+                    shareTask(task);
                     return true;
-                } else {
+                }
+                     else {
                     return false;
                 }
             }
@@ -121,25 +133,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         popupMenu.show();
     }
 
-    /*
-    private void showTaskDetails(Task task) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Task Details");
 
-        // Build message string with all task fields
-        StringBuilder message = new StringBuilder();
-        message.append("Titre: ").append(task.getTitle()).append("\n");
-        message.append("Description: ").append(task.getDescription()).append("\n");
-        message.append("Priority: ").append(task.getPriority()).append("\n");
-        message.append("Status: ").append(task.getStatus()).append("\n");
-        // Include other task fields as needed
-
-        builder.setMessage(message.toString());
-
-        builder.setPositiveButton("OK", (dialogInterface, which) -> dialogInterface.dismiss());
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    } */
 
     private void showTaskDetails(Task task) {
         // Start TaskDetailsActivity and pass the selected task
@@ -147,6 +141,45 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         intent.putExtra("task",task);
         context.startActivity(intent);
     }
+
+    private void deleteTask(Task task) {
+        TaskDaoImpl taskDao = new TaskDaoImpl();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        taskDao.deleteTask(db, task.getTaskId(), new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Task deleted successfully, update the UI
+                Toast.makeText(context, "Tâche supprimée avec succès", Toast.LENGTH_SHORT).show();
+                taskList.remove(task);
+                notifyDataSetChanged();
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Failed to delete task
+                Toast.makeText(context, "Erreur lors de la suppression de la tâche: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void shareTask(Task task) {
+        // Create a string with the task details to share
+        StringBuilder shareText = new StringBuilder();
+        shareText.append("Title: ").append(task.getTitle()).append("\n");
+        shareText.append("Description: ").append(task.getDescription()).append("\n");
+        // Add more task details as needed
+
+        // Create an intent to share the task details
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Task Details");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText.toString());
+
+        // Start the activity to share the task details
+        context.startActivity(Intent.createChooser(shareIntent, "Share Task Details"));
+    }
+
+
 
 
 
