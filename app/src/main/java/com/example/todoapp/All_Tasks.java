@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class All_Tasks extends AppCompatActivity {
@@ -33,10 +35,17 @@ public class All_Tasks extends AppCompatActivity {
     private List<Task> allTasks;
     private EditText searchEditText;
 
+    private ImageView logoutIcon;
+
+    private FirebaseAuth mAuth;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_tasks);
+
+        mAuth = FirebaseAuth.getInstance();
         recyclerView = findViewById(R.id.recycler_tasks);
         searchEditText = findViewById(R.id.edit_text_search);
         myAdapter = new MyAdapter(new ArrayList<>(), this);
@@ -45,17 +54,17 @@ public class All_Tasks extends AppCompatActivity {
 
         allTasks = new ArrayList<>();
         fabAddTask = findViewById(R.id.fab_add_task);
+        logoutIcon = findViewById(R.id.logoutIcon); // Corrected to use findViewById(R.id.logoutIcon)
+
         fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Launch AddTaskActivity
                 Intent intent = new Intent(All_Tasks.this, AddTaskActivity.class);
                 startActivity(intent);
             }
         });
 
         getTasks();
-
 
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -70,6 +79,14 @@ public class All_Tasks extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
+
+        // Set OnClickListener for logoutIcon
+        logoutIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
             }
         });
     }
@@ -113,10 +130,6 @@ public class All_Tasks extends AppCompatActivity {
         });
     }
 
-    // Method to refresh tasks after update
-    private void refreshTasks() {
-        getTasks();
-    }
 
 
     private void filterTasks(String query) {
@@ -129,9 +142,17 @@ public class All_Tasks extends AppCompatActivity {
         myAdapter.setData(filteredTasks);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         getTasks();
+    }
+
+    private void logout() {
+        mAuth.signOut(); // Sign out the current user
+        Intent intent = new Intent(All_Tasks.this, Auth_Activity.class);
+        startActivity(intent);
+        finish();
     }
 }

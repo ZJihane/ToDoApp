@@ -29,9 +29,23 @@
             android:id="@+id/text_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="All Tasks"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_marginStart="16dp"/>
+            android:textAppearance="?android:textAppearanceLarge" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <!-- Logout icon -->
+        <ImageButton
+            android:id="@+id/logoutIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_logout"
+            android:clickable="true"
+            android:padding="12dp"/>
 
     </LinearLayout>
 

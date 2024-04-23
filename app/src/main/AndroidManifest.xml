@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoApp"
         tools:targetApi="31">
+
         <activity
             android:name=".TaskDetailsActivity"
             android:exported="false" />
@@ -22,7 +23,7 @@
             android:name=".All_Tasks"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Auth_Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
