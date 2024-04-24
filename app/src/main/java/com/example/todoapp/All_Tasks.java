@@ -113,8 +113,12 @@ public class All_Tasks extends AppCompatActivity {
         showProgressDialog();
         TaskDaoImpl taskDao = new TaskDaoImpl();
         FirebaseApp.initializeApp(this);
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        taskDao.getAllTasks(db, new OnSuccessListener<List<Task>>() {
+        String currentUserUid = mAuth.getCurrentUser().getUid();
+
+        // Call the method to fetch tasks filtered by UID
+        taskDao.getTasksByUid(db, currentUserUid, new OnSuccessListener<List<Task>>() {
             @Override
             public void onSuccess(List<Task> data) {
                 hideProgressDialog();

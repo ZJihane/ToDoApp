@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +36,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private Spinner prioritySpinner;
     private Button updateButton;
     private FirebaseFirestore db;
+    FirebaseUser user_mAuth ;
+    private FirebaseAuth mAuth;
 
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
@@ -50,14 +54,15 @@ public class TaskDetailsActivity extends AppCompatActivity {
         prioritySpinner = findViewById(R.id.spinner_priority);
         updateButton = findViewById(R.id.buttonUpdateTask);
 
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        user_mAuth = mAuth.getCurrentUser();
 
         // Set click listener for update button
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateTask();
+                updateTask(user_mAuth.getUid());
             }
         });
 
@@ -113,7 +118,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         };
     }
 
-    private void updateTask() {
+    private void updateTask(String UID) {
         // Retrieve values from EditText and Spinners
         String title = titleEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
@@ -136,7 +141,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         // Create Task object with updated values and original ID
         Task updatedTask = new Task(title, description, dueDate,
-                Task.TaskStatus.valueOf(status), Task.TaskPriority.valueOf(priority));
+                Task.TaskStatus.valueOf(status), Task.TaskPriority.valueOf(priority),UID);
 
         // Call DAO method to update task in Firestore
         TaskDaoImpl taskDao = new TaskDaoImpl();

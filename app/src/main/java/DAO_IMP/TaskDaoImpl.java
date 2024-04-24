@@ -6,10 +6,13 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import DAO.TaskDAO;
 import Model.Task;
@@ -74,20 +77,7 @@ public class TaskDaoImpl implements TaskDAO {
                 .addOnFailureListener(failureListener);
     }
 
-    @Override
-    public void getAllTasks(FirebaseFirestore db, OnSuccessListener<List<Task>> successListener, OnFailureListener failureListener) {
-        db.collection("Tasks")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Task> tasks = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Task task = document.toObject(Task.class);
-                        tasks.add(task);
-                    }
-                    successListener.onSuccess(tasks);
-                })
-                .addOnFailureListener(failureListener);
-    }
+
 
     @Override
     public void getTaskById(FirebaseFirestore db, String taskId, OnSuccessListener<Task> successListener, OnFailureListener failureListener) {
@@ -116,7 +106,23 @@ public class TaskDaoImpl implements TaskDAO {
                 .addOnFailureListener(e -> failureListener.onFailure(e));
     }
 
+    @Override
+    public void getTasksByUid(FirebaseFirestore db, String currentUserUid, OnSuccessListener<List<Task>> onSuccessListener, OnFailureListener onFailureListener) {
+        CollectionReference tasksRef = db.collection("Tasks");
 
+        // Query tasks where UID field matches currentUserUid
+        Query query = tasksRef.whereEqualTo("uid", currentUserUid);
 
-
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<Task> tasks = new ArrayList<>();
+                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                    Task task = document.toObject(Task.class);
+                    tasks.add(task);
+                }
+                onSuccessListener.onSuccess(tasks);
+            }
+        }).addOnFailureListener(onFailureListener);
+    }
 }

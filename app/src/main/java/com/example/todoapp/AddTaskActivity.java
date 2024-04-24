@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
@@ -39,6 +41,9 @@ public class AddTaskActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private TaskDAO taskDAO;
 
+    FirebaseUser user_mAuth ;
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,10 @@ public class AddTaskActivity extends AppCompatActivity {
         });
 
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        user_mAuth = mAuth.getCurrentUser();
+
+
         taskDAO = new TaskDaoImpl();
         calendar = Calendar.getInstance();
 
@@ -85,7 +94,7 @@ public class AddTaskActivity extends AppCompatActivity {
         buttonAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addTask();
+                addTask(user_mAuth.getUid());
             }
         });
     }
@@ -115,7 +124,7 @@ public class AddTaskActivity extends AppCompatActivity {
         editTextDueDate.setText(sdf.format(calendar.getTime()));
     }
 
-    private void addTask() {
+    private void addTask(String UID) {
         String title = editTextTitle.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
         String dueDate = editTextDueDate.getText().toString().trim();
@@ -127,8 +136,8 @@ public class AddTaskActivity extends AppCompatActivity {
             return;
         }
 
-        // Create a new Task object
-        Task task = new Task(title, description, new Date() , Task.TaskStatus.valueOf(status.toUpperCase()), Task.TaskPriority.valueOf(priority.toUpperCase()));
+        // Create a new Task object with UID
+        Task task = new Task(title, description, new Date(), Task.TaskStatus.valueOf(status.toUpperCase()), Task.TaskPriority.valueOf(priority.toUpperCase()), UID);
 
         // Call the addTask method from TaskDaoImpl
         taskDAO.addTask(db, task,
@@ -146,4 +155,5 @@ public class AddTaskActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }

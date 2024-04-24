@@ -14,10 +14,12 @@ public class Task implements Parcelable {
     private TaskStatus status;
     private TaskPriority priority;
 
+    private String UID ;
+
     public Task() {
     }
 
-    public Task(String title, String description, Date dueDate, TaskStatus status, TaskPriority priority) {
+    public Task(String title, String description, Date dueDate, TaskStatus status, TaskPriority priority, String UID) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -25,10 +27,11 @@ public class Task implements Parcelable {
         this.priority = priority;
         this.createdAt = new Date();
         this.taskId = generateTaskId();
+        this.UID = UID; // Initialize UID
     }
 
-    public Task(String taskId ,String title, String description, Date dueDate, TaskStatus status, TaskPriority priority) {
-        this.taskId=taskId ;
+    public Task(String taskId, String title, String description, Date dueDate, TaskStatus status, TaskPriority priority, String UID) {
+        this.taskId = taskId;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -36,7 +39,21 @@ public class Task implements Parcelable {
         this.priority = priority;
         this.createdAt = new Date();
         this.taskId = generateTaskId();
+        this.UID = UID; // Initialize UID
     }
+
+    // Getters and setters for UID
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
+
+
 
     public String getTaskId() {
         return taskId;
@@ -113,16 +130,6 @@ public class Task implements Parcelable {
     }
 
     // Parcelable implementation
-    protected Task(Parcel in) {
-        taskId = in.readString();
-        title = in.readString();
-        description = in.readString();
-        createdAt = new Date(in.readLong());
-        dueDate = new Date(in.readLong());
-        status = TaskStatus.valueOf(in.readString());
-        priority = TaskPriority.valueOf(in.readString());
-    }
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(taskId);
@@ -132,6 +139,19 @@ public class Task implements Parcelable {
         dest.writeLong(dueDate != null ? dueDate.getTime() : -1L);
         dest.writeString(status.name());
         dest.writeString(priority.name());
+        dest.writeString(UID); // Write UID to parcel
+    }
+
+    // Parcelable implementation (readFromParcel method updated to include UID)
+    protected Task(Parcel in) {
+        taskId = in.readString();
+        title = in.readString();
+        description = in.readString();
+        createdAt = new Date(in.readLong());
+        dueDate = new Date(in.readLong());
+        status = TaskStatus.valueOf(in.readString());
+        priority = TaskPriority.valueOf(in.readString());
+        UID = in.readString(); // Read UID from parcel
     }
 
     @Override

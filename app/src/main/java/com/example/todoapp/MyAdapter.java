@@ -167,7 +167,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         StringBuilder shareText = new StringBuilder();
         shareText.append("Title: ").append(task.getTitle()).append("\n");
         shareText.append("Description: ").append(task.getDescription()).append("\n");
-        // Add more task details as needed
+
 
         // Create an intent to share the task details
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
