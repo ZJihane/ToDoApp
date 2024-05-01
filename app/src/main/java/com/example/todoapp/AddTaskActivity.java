@@ -127,17 +127,25 @@ public class AddTaskActivity extends AppCompatActivity {
     private void addTask(String UID) {
         String title = editTextTitle.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
-        String dueDate = editTextDueDate.getText().toString().trim();
+        String dueDateString = editTextDueDate.getText().toString().trim();
+        Date dueDate;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            dueDate = dateFormat.parse(dueDateString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
         String status = spinnerStatus.getSelectedItem().toString();
         String priority = spinnerPriority.getSelectedItem().toString();
 
-        if (title.isEmpty() || description.isEmpty() || dueDate.isEmpty()) {
+        if (title.isEmpty() || description.isEmpty() || dueDateString.isEmpty()) {
             textViewError.setText("Please fill in all fields");
             return;
         }
 
         // Create a new Task object with UID
-        Task task = new Task(title, description, new Date(), Task.TaskStatus.valueOf(status.toUpperCase()), Task.TaskPriority.valueOf(priority.toUpperCase()), UID);
+        Task task = new Task(title, description, dueDate, Task.TaskStatus.valueOf(status.toUpperCase()), Task.TaskPriority.valueOf(priority.toUpperCase()), UID);
 
         // Call the addTask method from TaskDaoImpl
         taskDAO.addTask(db, task,

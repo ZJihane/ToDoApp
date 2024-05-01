@@ -38,7 +38,6 @@ public class Task implements Parcelable {
         this.status = status;
         this.priority = priority;
         this.createdAt = new Date();
-        this.taskId = generateTaskId();
         this.UID = UID; // Initialize UID
     }
 

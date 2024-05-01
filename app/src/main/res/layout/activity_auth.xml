@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Auth_Activity">
+
+
+
+
+    <LinearLayout
+        android:id="@+id/espace1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="visible"
+        >
+
+        <TextView
+            android:id="@+id/Auth_title_1"
+            android:layout_width="match_parent"
+            android:layout_height="131dp"
+            android:fontFamily="@font/audiowide"
+            android:gravity="center"
+            android:text="Sign In"
+            android:textColor="#673AB7"
+            android:textSize="34sp" />
+
+
+        <TextView
+            android:id="@+id/login_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text=" Login"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Entrer your e-mail"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text=" Password"
+            android:textColor="#673AB7"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your password"
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+        <Button
+            android:id="@+id/BttLogin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Login"/>
+
+        <Button
+            android:id="@+id/BttsignUp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Sign Up" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/espace2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+
+        >
+
+        <TextView
+            android:id="@+id/Auth_title_2"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:fontFamily="@font/audiowide"
+            android:gravity="center"
+            android:text="Sign Up"
+            android:textColor="#673AB7"
+            android:textSize="34sp" />
+
+        <TextView
+            android:id="@+id/login_nom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/audiowide"
+            android:text=" Last Name"
+            android:textColor="#673AB7"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/nom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Enter youtr Last Name"
+            android:inputType="text"
+            android:textSize="20sp"
+
+            />
+
+        <TextView
+            android:id="@+id/login_prenom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/audiowide"
+            android:text=" First Name"
+            android:textColor="#673AB7"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/prenom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Enter your First Name"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/login_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/audiowide"
+            android:text=" Email"
+            android:textColor="#673AB7"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Enter your Email"
+            android:inputType="textEmailAddress"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/login_tel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/audiowide"
+            android:text=" Phone Number"
+            android:textColor="#673AB7"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/tel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Enter your phone Number"
+            android:inputType="phone"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/login_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/audiowide"
+            android:text=" Password"
+            android:textColor="#673AB7"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/register_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Enter your Password"
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+        <Button
+            android:id="@+id/BttRegister"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Create a new account"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/espace3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/messageAuth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vous etes deja authentifiés"
+            android:textSize="30sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+</LinearLayout>

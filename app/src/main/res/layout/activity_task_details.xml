@@ -8,7 +8,7 @@
     tools:context=".AddTaskActivity">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_description" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="132dp"
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_description" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="224dp"
@@ -67,7 +67,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_dynamic_neutral_variant80"
+        android:background="@color/purp_app"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,6 +89,15 @@
             android:text="Update Task"
             android:textAppearance="?android:textAppearanceLarge"
             android:layout_marginStart="16dp"/>
+
+        <TextView
+            android:id="@+id/text_view_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/red"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -162,26 +171,13 @@
         android:layout_margin="16dp"
         android:text="Update Task"
         android:textColor="@android:color/black"
-        app:backgroundTint="@color/material_dynamic_neutral_variant80"
+        app:backgroundTint="@color/purp_app"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_priority"
         app:layout_constraintVertical_bias="0.385" />
-
-    <TextView
-        android:id="@+id/text_view_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/red"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_add_task" />
 
     <TextView
         android:id="@+id/textView3"

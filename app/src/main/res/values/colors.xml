@@ -10,6 +10,6 @@
     <color name="purple">#FF800080</color>
     <color name="pink">#FFFFC0CB</color>
     <color name="cyan">#FF00FFFF</color>
-    <color name="material_dynamic_neutral_variant80">#C0C7CD</color>
+    <color name="purp_app">#BAA0E6</color>
     <!-- Add more color entries here as needed -->
 </resources>

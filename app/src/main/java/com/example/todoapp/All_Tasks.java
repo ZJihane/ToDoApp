@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +36,7 @@ public class All_Tasks extends AppCompatActivity {
     private List<Task> allTasks;
     private EditText searchEditText;
 
-    private ImageView logoutIcon;
+
 
     private FirebaseAuth mAuth;
 
@@ -44,6 +45,15 @@ public class All_Tasks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_tasks);
+
+        ImageButton backBtn = findViewById(R.id.back_button);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         recyclerView = findViewById(R.id.recycler_tasks);
@@ -54,7 +64,7 @@ public class All_Tasks extends AppCompatActivity {
 
         allTasks = new ArrayList<>();
         fabAddTask = findViewById(R.id.fab_add_task);
-        logoutIcon = findViewById(R.id.logoutIcon); // Corrected to use findViewById(R.id.logoutIcon)
+        // Corrected to use findViewById(R.id.logoutIcon)
 
         fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,12 +93,7 @@ public class All_Tasks extends AppCompatActivity {
         });
 
         // Set OnClickListener for logoutIcon
-        logoutIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
+
     }
 
     // Method to show the ProgressDialog
@@ -153,10 +158,5 @@ public class All_Tasks extends AppCompatActivity {
         getTasks();
     }
 
-    private void logout() {
-        mAuth.signOut(); // Sign out the current user
-        Intent intent = new Intent(All_Tasks.this, Auth_Activity.class);
-        startActivity(intent);
-        finish();
-    }
+
 }
