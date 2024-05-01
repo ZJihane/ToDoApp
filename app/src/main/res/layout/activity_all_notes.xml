@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purp_app"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/text_view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="All Notes"
+            android:textAppearance="?android:textAppearanceLarge" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+
+
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_text_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search Notes"
+        android:padding="16dp"
+        android:drawableLeft="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:imeOptions="actionSearch"
+        android:singleLine="true" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_notes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="16dp"
+        android:background="@color/purp_app"
+        android:src="@drawable/ic_add" />
+
+</LinearLayout>
