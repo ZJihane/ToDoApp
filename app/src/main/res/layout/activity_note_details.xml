@@ -114,13 +114,16 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="56dp"
         android:text="Upload picture"
         android:textColor="#000000"
         android:textSize="16dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine"
-        tools:layout_editor_absoluteX="18dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -170,10 +173,10 @@
         android:tint="@color/purp_app"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.853"
+        app:layout_constraintHorizontal_bias="0.892"
         app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintVertical_bias="0.615" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
