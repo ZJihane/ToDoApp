@@ -15,6 +15,9 @@
         android:theme="@style/Theme.ToDoApp"
         tools:targetApi="31">
         <activity
+            android:name=".gestion_profil"
+            android:exported="false" />
+        <activity
             android:name=".All_Notes"
             android:exported="false" />
         <activity
@@ -22,9 +25,7 @@
             android:exported="false" />
         <activity
             android:name=".AddNoteActivity"
-            android:exported="false"/>
-
-
+            android:exported="false" />
         <activity
             android:name=".first_screen"
             android:exported="false" />
@@ -37,7 +38,6 @@
         <activity
             android:name=".All_Tasks"
             android:exported="false" />
-
         <activity
             android:name=".Auth_Activity"
             android:exported="true">
@@ -47,7 +47,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".AddTaskActivity" />
     </application>
 

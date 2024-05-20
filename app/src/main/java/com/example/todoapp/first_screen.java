@@ -86,6 +86,10 @@ public class first_screen extends AppCompatActivity {
 
             startActivity(new Intent(first_screen.this, All_Notes.class));
         });
+        findViewById(R.id.button4).setOnClickListener(view -> {
+
+            startActivity(new Intent(first_screen.this, gestion_profil.class));
+        });
 
         logoutIcon.setOnClickListener(new View.OnClickListener() {
             @Override
