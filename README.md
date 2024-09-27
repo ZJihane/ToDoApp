@@ -1,7 +1,8 @@
 # ToDoApp
-![image](https://github.com/user-attachments/assets/46d6bbdc-9433-43bf-919b-a1ec44fdfb18)
-![image](https://github.com/user-attachments/assets/c9348b4d-8255-4927-8be3-2a3d4bcb36d0)
-![image](https://github.com/user-attachments/assets/5d2cee8a-c1d8-4583-8318-578205fe6d4e)
+<img src="https://github.com/user-attachments/assets/46d6bbdc-9433-43bf-919b-a1ec44fdfb18" alt="image" width="250"/>
+<img src="https://github.com/user-attachments/assets/c9348b4d-8255-4927-8be3-2a3d4bcb36d0" alt="image" width="250"/>
+<img src="https://github.com/user-attachments/assets/5d2cee8a-c1d8-4583-8318-578205fe6d4e" alt="image" width="250"/>
+
 
 
 
